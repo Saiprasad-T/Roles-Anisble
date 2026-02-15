@@ -1,19 +1,33 @@
-- name: app_setup
-  ansible.builtin.import_role:
-    name: common
-    tasks_from: app_setup.yaml
-- name: node_setup
-  ansible.builtin.import_role:
-    name: common
-    tasks_from: node_setup.yaml
-- name: updating the .conf files
-  ansible.builtin.template:
-    src: nginx.conf
-    dest: /etc/nginx/nginx.conf
-- name: daemon_reload
-  ansible.builtin.systemd_service:
-    daemon_reload: true
-- name: restarting the nginx
-  ansible.builtin.service:
-    name: nginx
-    state: restarted
+  - name: enabling nginx 1.24
+    ansible.builtin.command: dnf module enable nginx:1.24 -y
+  - name: installing nginx
+    ansible.builtin.dnf:
+      name: nginx
+      state: present
+  - name: enabling and starting the nginx
+    ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled: yes
+  - name: removing the previous files from html folder
+    ansible.builtin.command: rm -rf /usr/share/nginx/html/*
+  - name: downloading the content from s3
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+      dest: /tmp/frontend.zip
+  - name: unzipping the files from /tmp to /html
+    ansible.builtin.unarchive:
+      src: /tmp/frontend.zip
+      dest: /usr/share/nginx/html
+      remote_src: yes
+  - name: updating the .conf files
+    ansible.builtin.template:
+      src: nginx.conf
+      dest: /etc/nginx/nginx.conf
+  -  name: daemon_reload
+     ansible.builtin.systemd_service:
+      daemon_reload: true
+  -  name: restarting the nginx
+     ansible.builtin.service:
+      name: nginx
+      state: restarted
