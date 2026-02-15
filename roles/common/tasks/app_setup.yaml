@@ -15,8 +15,8 @@
     state: directory
 - name: "deleting {{ component }}.zip file" #deleting zip file
   ansible.builtin.file:
-  path: "/tmp/{{ component }}.zip"
-  state: absent
+    path: "/tmp/{{ component }}.zip"
+    state: absent
 - name: Downloading zip file #downloading zip file
   ansible.builtin.get_url:
     url: "https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip"
