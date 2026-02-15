@@ -13,16 +13,16 @@
   ansible.builtin.file:
     path: /app
     state: directory
-- name: deleting {{ component }}.zip file #deleting zip file
+- name: "deleting {{ component }}.zip file" #deleting zip file
   ansible.builtin.file:
-  path: /tmp/{{ component }}.zip
+  path: "/tmp/{{ component }}.zip"
   state: absent
 - name: Downloading zip file #downloading zip file
   ansible.builtin.get_url:
-    url: https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip
+    url: "https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip"
     dest: /tmp/{{ component }}.zip
-- name: Unarchive the {{ component }}.zip file
+- name: "Unarchive the {{ component }}.zip file"
   ansible.builtin.unarchive: #unzipping the file to/app
-    src: /tmp/{{ component }}.zip
+    src: "/tmp/{{ component }}.zip"
     dest: /app
     remote_src: yes
