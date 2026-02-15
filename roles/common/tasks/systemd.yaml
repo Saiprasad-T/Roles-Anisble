@@ -1,6 +1,6 @@
 - name: Template a file to /etc/file.conf #updating conf file
   ansible.builtin.template:
-    src: "{{ component }}.service"
+    src: "{{ component }}.service.j2"
     dest: "/etc/systemd/system/{{ component }}.service"
     remote_src: yes
 - name: daemon_reload
