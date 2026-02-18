@@ -24,7 +24,6 @@
     ansible.builtin.template:
       src: nginx.conf
       dest: /etc/nginx/nginx.conf
-  -  name: daemon_reload
-     ansible.builtin.systemd_service:
-      daemon_reload: true
-      notify: restarting the nginx
+    notify:
+       - restarting the nginx
+       - daemon_reload
