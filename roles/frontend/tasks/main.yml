@@ -25,5 +25,5 @@
       src: nginx.conf
       dest: /etc/nginx/nginx.conf
     notify:
-       - restarting the nginx
        - daemon_reload
+       - restarting the nginx
